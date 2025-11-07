@@ -1,0 +1,14 @@
+# Virtual environment
+.venv/
+venv/
+
+# Data files (large files, raw data)
+data/*.csv
+data/*.csv.gz
+data/*.geojson
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# System files
+.DS_Store

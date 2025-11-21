@@ -2,8 +2,8 @@
 
 **Course:** Data Science and AI for Business  
 **Professor:** Dr. Chris Volinsky  
-**Team:** Team M5  
-**Members:** Princy Doshi, Ashutosh Agrawal, Om Thakur
+**Team:** Princy Doshi, Ashutosh Agrawal, Om Thakur  
+**Date:** Fall 2025
 
 ---
 
@@ -11,9 +11,9 @@
 
 This project develops a machine learning-based pricing recommendation system for Airbnb property managers in New York City. Using data from Inside Airbnb, we predict optimal nightly rates to maximize revenue while maintaining healthy occupancy rates.
 
-**Business Problem:** Property managers need to dynamically price their listings to balance occupancy and profitability.
+**Business Problem:** Property managers need to dynamically price their listings to balance occupancy and profitability in a competitive short-term rental market.
 
-**Solution:** ML models trained on 2,000+ NYC listings to predict competitive market rates based on property features, location, and demand indicators.
+**Solution:** Gradient Boosting regression model trained on 1,937 NYC entire home listings across eight diverse neighborhoods (Williamsburg, Upper East Side, Astoria, Bedford-Stuyvesant, Hell's Kitchen, Harlem, Bushwick, Crown Heights), achieving RMSE of $100.14 and R² of 0.6514.
 
 ---
 
@@ -87,300 +87,92 @@ airbnb-pricing-project/
 
 ---
 
-## 🎯 Key Decisions Made
-
-### 1. **Neighborhood Selection**
-**Chosen:** [List your 3 neighborhoods]
-
-**Rationale:**
-- Geographic diversity (Manhattan, Brooklyn, Queens)
-- Price point diversity (luxury, mid-range, budget)
-- Sufficient data (500+ listings each)
-
-### 2. **Filtering Criteria**
-- **Room Type:** Entire home/apartment only
-- **Minimum Reviews:** ≥5 (established listings)
-- **Availability:** ≥30 days/year (active listings)
-- **Price Range:** $50-$1,000/night (remove outliers)
-
-**Result:** [X,XXX] listings retained ([XX]% of original)
-
-### 3. **Feature Engineering**
-Created 7 new features:
-- `occupancy_proxy` - 365 - availability_365
-- `occupancy_rate` - Occupancy proxy / 365
-- `review_intensity` - Reviews per month × 12
-- `instant_bookable_num` - Binary (1/0)
-- `is_superhost` - Binary (1/0)
-- `avg_review_score` - Composite of all review scores
-- `amenities_count` - Number of amenities
-
-### 4. **Model Selection**
-Evaluated 5 models:
-- Linear Regression (baseline)
-- Ridge Regression (L2 regularization)
-- Lasso Regression (L1 regularization)
-- Random Forest (ensemble method)
-- Gradient Boosting (sequential ensemble)
-
-**Winner:** [Your best model]  
-**Performance:** RMSE=$[XX.XX], R²=[0.XXX]
-
----
-
 ## 📊 Key Results
 
 ### Model Performance
-- **RMSE:** $[XX.XX] - Average prediction error
-- **R²:** [0.XXX] - Explains [XX]% of price variation
-- **MAPE:** [X.X]% - Mean absolute percentage error
+- **RMSE:** $109.28 - Average prediction error
+- **R²:** 0.5515 - Explains 55.15% of price variation  
+- **MAE:** $68.06 - Mean absolute error
+- **MAPE:** 27.00% - Mean absolute percentage error
 
-### Top Price Drivers
-1. **[Feature 1]** - [XX]% importance
-2. **[Feature 2]** - [XX]% importance
-3. **[Feature 3]** - [XX]% importance
-4. **[Feature 4]** - [XX]% importance
-5. **[Feature 5]** - [XX]% importance
+**Context:** On average price of $232.96, RMSE of $109 represents 47% error rate, which is reasonable for real estate pricing with heterogeneous property types.
 
-### Business Impact
-- **Revenue Opportunity:** $[XXX,XXX] annually ([X]% increase)
-- **Underpriced Properties:** [XX]% of portfolio
-- **Average Opportunity:** $[XX]/night per underpriced listing
+### Top Price Drivers (Feature Importance)
+1. **Accommodates** - 25.63% (guest capacity is primary driver)
+2. **Bathrooms** - 21.20% (bathroom count strong signal of property quality)
+3. **Longitude** - 12.72% (east-west location within neighborhoods)
+4. **Latitude** - 8.44% (north-south location)
+5. **Amenities Count** - 6.38% (more amenities justify higher prices)
+6. **Minimum Nights** - 6.07%
+7. **Number of Reviews** - 3.26%
 
----
+**Key Insight:** Property capacity (accommodates + bathrooms) drives 47% of pricing power. Location (lat/long) accounts for 21%. Demand indicators (reviews, availability) have minimal impact (<5% combined), suggesting intrinsic property features matter more than booking history.
 
-## 📈 Sample Insights
+### Correlation Analysis
+**Strongest correlations with price:**
+- Accommodates: r = 0.559 ⭐
+- Bathrooms: r = 0.552 ⭐
+- Bedrooms: r = 0.523 ⭐
+- Beds: r = 0.410
 
-### By Neighborhood
-| Neighborhood | Current Avg | Recommended Avg | Change |
-|--------------|-------------|-----------------|--------|
-| [Hood 1] | $[XXX] | $[XXX] | +$[XX] |
-| [Hood 2] | $[XXX] | $[XXX] | +$[XX] |
-| [Hood 3] | $[XXX] | $[XXX] | -$[XX] |
+**Weak correlations:**
+- Availability_365: r = 0.070
+- Number of reviews: r = 0.060
+- Occupancy proxy: r = -0.070
 
-### Property Segments
-- **Underpriced:** [XX]% → Increase rates by $[XX] avg
-- **Optimal:** [XX]% → Maintain current rates
-- **Overpriced:** [XX]% → Reduce rates by $[XX] avg
+**Interpretation:** Capacity metrics show strong linear relationships with price, while demand/supply indicators (reviews, availability) show almost no correlation, suggesting price is driven by property characteristics rather than market dynamics in our filtered dataset.
 
----
+### Business Impact Analysis
 
-## 🎤 Presentation Structure
+**Property Segmentation:**
+- **Underpriced:** 54 properties (41.9%) - Average opportunity: +$74.67/night
+- **Optimally Priced:** 41 properties (31.8%)
+- **Overpriced:** 34 properties (26.4%) - Average adjustment needed: -$129.06/night
 
-**Time:** 8-10 minutes
+**Test Set Revenue Analysis:**
+- Current average price: $245.35/night
+- Model-recommended average: $242.71/night  
+- Net adjustment: -$2.64/night (-1.08%)
 
-1. **Business Problem** (1 min)
-   - Who we are, what decision we're making
-   - Why dynamic pricing matters
+**Interpretation:** Test set shows slight overpricing on average, but model identifies significant individual opportunities in both directions. The negative net change demonstrates model objectivity - it recommends price *decreases* when appropriate, not just increases.
 
-2. **Data & Approach** (2 min)
-   - Dataset scope
-   - Key insights from EDA
+**Individual Property Examples:**
 
-3. **Model Results** (2 min)
-   - Performance comparison
-   - Best model selection
-   - Feature importance
+**Top Underpriced Opportunity:**
+- 3BR/2BA Williamsburg Townhouse
+- Current: $175, Recommended: $535 (+$360, +206%)
+- Model suggests massive underpricing relative to capacity/location
 
-4. **Business Impact** (3 min)
-   - Revenue opportunity quantified
-   - Pricing recommendations
-   - Implementation roadmap
+**Top Overpriced Property:**
+- Modern 4700 SF Williamsburg house
+- Current: $1000, Recommended: $516 (-$484, -48%)
+- Priced above model prediction despite large size
 
-5. **Q&A** (2 min)
-   - Prepared for common questions
+### Model Limitations & Error Analysis
 
----
+**Residual Statistics:**
+- Mean residual: $2.64 (close to 0 - unbiased)
+- Std dev: $109.25
+- Min error: -$360 (underestimated)
+- Max error: +$484 (overestimated)
 
-## 💡 Challenges & Solutions
+**Largest Prediction Errors:**
+1. Modern 4700 SF house (actual $1000, predicted $516) - unique luxury property
+2. Park-side townhouse with parking (actual $800, predicted $389) - parking premium not captured
+3. 3BR/2BA Williamsburg townhouse (actual $175, predicted $535) - severely underpriced
 
-### Challenge 1: Data Size
-**Problem:** 40,000+ listings too large  
-**Solution:** Filtered to 3 neighborhoods with diverse characteristics  
-**Professor Feedback:** "Will need to narrow down... very large"
+**Error Patterns:**
+- Model struggles with extreme luxury properties (>$700/night)
+- Unique amenities (parking, private outdoor space) not fully captured
+- Some properties genuinely mispriced in market
 
-### Challenge 2: Missing Data
-**Problem:** Missing bedrooms, bathrooms, review scores  
-**Solution:** Median imputation for numeric, "Unknown" for categorical  
-**Professor Feedback:** "Real data - will need to be cleaned"
-
-### Challenge 3: Occupancy Data
-**Problem:** No actual booking data available  
-**Solution:** Used availability as proxy (365 - available days)  
-**Future Work:** Integrate actual booking data for true revenue optimization
-
----
-
-## 🔮 Future Enhancements
-
-### Data
-- [ ] Actual occupancy/booking data
-- [ ] Events calendar (conferences, concerts)
-- [ ] Weather data
-- [ ] Transportation proximity
-- [ ] Competitor pricing (real-time)
-
-### Modeling
-- [ ] Neural networks for complex patterns
-- [ ] Time series for seasonality
-- [ ] Multi-objective optimization (revenue + occupancy)
-- [ ] Causal inference for price elasticity
-
-### Product
-- [ ] Real-time pricing dashboard
-- [ ] Mobile app with alerts
-- [ ] A/B testing framework
-- [ ] Owner self-service portal
-
----
-
-## 📚 References
-
-1. **Data Source:** Inside Airbnb - http://insideairbnb.com/
-2. **Course Textbook:** Provost & Fawcett (2013), *Data Science for Business*
-3. **Libraries Used:** pandas, scikit-learn, matplotlib, seaborn
-4. **Academic Papers:** [Add any you reference]
-
----
-
-## 👥 Team Contributions
-
-- **[Member 1]:** Data cleaning, EDA, report writing
-- **[Member 2]:** Feature engineering, modeling, code development  
-- **[Member 3]:** Business analysis, presentation, visualizations
-
-*All team members contributed to project planning, analysis, and final deliverables.*
-
----
-
-## ✅ Deliverables Checklist
-
-### Code
-- [x] Data loading and exploration notebook
-- [x] Complete analysis pipeline
-- [x] Well-commented, reproducible code
-- [x] All visualizations generated
-
-### Report (Due: [Date])
-- [ ] Business understanding section
-- [ ] Data preparation documentation
-- [ ] Exploratory data analysis
-- [ ] Modeling methodology
-- [ ] Results and evaluation
-- [ ] Business impact quantified
-- [ ] Deployment considerations
-- [ ] Future work discussed
-- [ ] Proofread and formatted
-- [ ] Exported as PDF
-
-### Presentation (Due: [Date] midnight before)
-- [ ] 10 slides maximum
-- [ ] 8-10 minute timing verified
-- [ ] All team members have speaking parts
-- [ ] Visualizations clear and large fonts
-- [ ] Q&A preparation
-- [ ] Uploaded to Google Drive
-- [ ] Tested in classroom
-
-### Submission
-- [ ] Report PDF submitted
-- [ ] Slides uploaded on time
-- [ ] Code/notebooks included
-- [ ] Team evaluation form completed
-
----
-
-## 🎓 Alignment with Course Rubric
-
-### Report (60% of project grade)
-
-**Business Understanding** ✅
-- Clear problem statement
-- Decision framework defined
-- Benefits quantified
-
-**Data Preparation** ✅
-- Cleaning process documented
-- Filtering rationale explained
-- Feature engineering justified
-
-**Exploratory Data Analysis** ✅
-- Multiple visualizations
-- Key insights identified
-- Domain expertise applied
-
-**Modeling** ✅
-- Multiple algorithms compared
-- Appropriate evaluation metrics
-- Best model selected with rationale
-
-**Evaluation** ✅
-- Metrics interpreted
-- Error analysis performed
-- Limitations discussed
-
-**Business Impact** ✅
-- ROI quantified ($XXX,XXX revenue increase)
-- Implementation plan provided
-- Risks identified and mitigated
-
-**Organization** ✅
-- Structured narrative
-- Professional formatting
-- Clear conclusions
-
-### Presentation (30% of project grade)
-
-**Business Setup** ✅
-- Clear problem motivation
-- Role-playing as decision makers
-
-**Effectiveness** ✅
-- Engaging visuals
-- Clear narrative arc
-- Proper timing (8-10 min)
-
-**Model Results** ✅
-- Appropriate evaluation
-- Clear interpretation
-- Feature importance explained
-
-**Impact Discussion** ✅
-- Quantified benefits
-- Implementation roadmap
-- Future directions
-
----
-
-## 📝 Notes
-
-### What We Learned
-- Real-world data is messy (professor was right!)
-- Feature engineering > algorithm selection
-- Business context crucial for interpretation
-- Communication as important as technical accuracy
-
-### What Worked Well
-- Structured pipeline approach
-- Early neighborhood scoping
-- Comprehensive EDA
-- Clear business framing
-
-### What We'd Do Differently
-- Start data cleaning earlier
-- More time on feature engineering
-- Test multiple neighborhood combinations
-- Earlier presentation practice
-
----
-
-## 📄 License & Data Usage
-
-**Data:** Inside Airbnb data is made available under Creative Commons CC0 1.0 Universal License.
-
-**Project:** Created for educational purposes as part of NYU Stern Data Science course.
-
-**Academic Integrity:** This project follows NYU Stern's Academic Integrity policies and Student Code of Conduct. All work is original, with proper attribution to data sources and references.
+**What's Missing from Model:**
+- View quality (park, skyline, waterfront)
+- Recent renovations/updates
+- Exact street location (within neighborhood)
+- Proximity to subway/transportation
+- Building type (townhouse vs apartment)
+- Outdoor space (terrace, garden, parking)
 
 ---
 
@@ -390,18 +182,3 @@ Evaluated 5 models:
 - **Inside Airbnb** for providing open data
 - **Teaching assistants** for technical support
 - **Team members** for collaboration and hard work
-
----
-
-**Last Updated:** [Date]  
-**Version:** 1.0  
-**Status:** ✅ Ready for submission
-
----
-
-## Contact
-
-For questions about this project:
-- Team: pd
-- Course: GB-2336/3336 - Data Science and AI for Business
-- Institution: NYU Stern School of Business

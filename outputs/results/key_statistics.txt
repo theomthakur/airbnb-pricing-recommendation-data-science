@@ -3,34 +3,34 @@ AIRBNB PRICING OPTIMIZATION - KEY STATISTICS
 
 Data Statistics:
    Original Dataset Size: 36111
-   After Filtering: 644
-   Test Set Size: 129
+   After Filtering: 1937
+   Test Set Size: 388
    Number of Features: 15
-   Target Neighborhoods: Williamsburg, Upper East Side, Astoria
+   Target Neighborhoods: Williamsburg, Upper East Side, Astoria, Bedford-Stuyvesant, Hell's Kitchen, Harlem, Bushwick, Crown Heights
 
 Price Statistics:
-   Mean Price: $232.96
+   Mean Price: $227.43
    Median Price: $180.00
-   Std Dev: $148.63
-   Min Price: $60.00
+   Std Dev: $151.90
+   Min Price: $53.00
    Max Price: $1000.00
 
 Best Model Performance:
-   Model Name: Random Forest
-   RMSE: $109.28
-   MAE: $68.06
-   R²: 0.5515
-   MAPE: 27.00%
+   Model Name: Gradient Boosting
+   RMSE: $100.14
+   MAE: $64.20
+   R²: 0.6514
+   MAPE: 29.68%
 
 Business Impact:
-   Current Avg Price: $245.35
-   Predicted Avg Price: $242.71
-   Price Change: $-2.64 (-1.08%)
-   Portfolio Size: 129
+   Current Avg Price: $232.19
+   Predicted Avg Price: $237.46
+   Price Change: $5.27 (+2.27%)
+   Portfolio Size: 388
    Assumed Occupancy: 70%
-   Current Annual Revenue: $8,086,575.00
-   Optimized Annual Revenue: $7,999,506.19
-   Revenue Increase: $-87,068.81 (-1.08%)
-   Underpriced Properties: 54 (41.9%)
-   Overpriced Properties: 34 (26.4%)
+   Current Annual Revenue: $23,018,250.50
+   Optimized Annual Revenue: $23,540,523.13
+   Revenue Increase: $522,272.63 (+2.27%)
+   Underpriced Properties: 173 (44.6%)
+   Overpriced Properties: 106 (27.3%)
 

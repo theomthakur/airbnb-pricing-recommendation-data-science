@@ -1,4 +1,9 @@
 neighborhood,count,current_avg,current_median,predicted_avg,predicted_median,change_avg,change_median
-Astoria,8,276.0,231.0,277.97,238.71,1.97,15.48
-Upper East Side,59,211.92,162.0,216.87,175.82,4.95,4.74
-Williamsburg,62,273.21,220.0,262.74,215.8,-10.47,11.06
+Astoria,11,217.18,210.0,258.3,195.2,41.12,26.97
+Bedford-Stuyvesant,86,194.99,178.5,199.55,172.04,4.56,6.56
+Bushwick,26,186.5,161.5,210.16,170.64,23.66,21.88
+Crown Heights,51,240.94,171.0,256.7,206.45,15.76,26.87
+Harlem,56,213.77,189.0,223.32,185.41,9.55,10.83
+Hell's Kitchen,52,278.29,177.5,284.18,242.26,5.9,5.04
+Upper East Side,52,211.17,155.0,211.83,178.99,0.66,2.9
+Williamsburg,54,303.2,217.5,282.92,212.98,-20.29,11.4
